@@ -1,0 +1,42 @@
+/* ===== Base Styles (Global) ===== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* App-wide body background and text color */
+body {
+  background-color: #f5f5f5;  /* soft neutral background */
+  color: #222;
+  min-height: 100vh;
+}
+
+/* The main wrapper that holds all page content */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-height: 100vh;
+}
+
+/* Adds space for your fixed navbar */
+.main-content {
+  padding-top: 60px;  /* same height as your navbar */
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Default heading weights */
+h1, h2, h3 {
+  font-weight: 600;
+}
+
+/* Default button style baseline */
+button {
+  cursor: pointer;
+  font-family: inherit;
+}

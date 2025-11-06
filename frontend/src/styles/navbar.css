@@ -1,0 +1,78 @@
+/* ================= NAVBAR BASE ================= */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background: #ffffff; /* white background */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  z-index: 1000;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Space below fixed navbar */
+body {
+  padding-top: 70px;
+}
+
+/* ================= LOGO ================= */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.navbar-logo img {
+  height: 42px;
+  width: auto;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.navbar-logo img:hover {
+  transform: scale(1.04);
+}
+
+/* ================= ACCOUNT AVATAR ================= */
+.navbar-account {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.navbar-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fc751c; /* orange accent ring */
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.navbar-avatar:hover {
+  transform: scale(1.06);
+  border-color: #242424; /* dark hover accent */
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 20px;
+    height: 60px;
+  }
+
+  .navbar-logo img {
+    height: 36px;
+  }
+
+  .navbar-avatar {
+    width: 36px;
+    height: 36px;
+  }
+}

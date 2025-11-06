@@ -1,0 +1,109 @@
+/* ===== Dashboard Styles ===== */
+
+.dashboard-container {
+  min-height: 100vh; /* full height background */
+  padding: 4rem 2rem;
+  background-color: #242424; /* dark charcoal */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.dashboard-title {
+  color: #ffffff;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+/* ===== GRID LAYOUT ===== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  max-width: 1100px;
+  padding: 0 1rem;
+}
+
+/* ===== CARDS ===== */
+.dashboard-card {
+  background: #ffffff;
+  border-radius: 1px;
+  padding: 2rem;
+  min-height: 260px; /* makes them more square */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-card h2 {
+  color: #242424;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.dashboard-card h2::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 3px;
+  background-color: #fc751c; /* orange accent line */
+  margin: 0.5rem auto 0;
+  border-radius: 2px;
+}
+
+.dashboard-card p {
+  color: #555;
+  font-size: 1rem;
+  margin-top: 0.75rem;
+  line-height: 1.5;
+  max-width: 80%;
+}
+
+/* ===== LOGOUT BUTTON ===== */
+.logout-btn {
+  background-color: #fc751c;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.6rem;
+  font-weight: 600;
+  margin: 2rem auto;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #e86812;
+  transform: scale(1.05);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 3rem 1rem;
+  }
+
+  .dashboard-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .dashboard-card {
+    min-height: 220px;
+  }
+}
