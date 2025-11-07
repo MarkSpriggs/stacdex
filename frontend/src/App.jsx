@@ -5,6 +5,7 @@ import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import Account from "./pages/Account";
 import { useAuth } from "./context/AuthContext";
 import "./index.css";
 
@@ -13,6 +14,7 @@ export default function App() {
 
   return (
     <div className="app-container">
+      {token && <Navbar/>}
       <Routes>
         {/* ===== Public routes ===== */}
         <Route path="/" element={<Landing />} />
@@ -22,6 +24,7 @@ export default function App() {
         {/* ===== Protected routes ===== */}
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/account" element={<Account/>} />
         </Route>
 
         {/* ===== Catch-all redirect ===== */}

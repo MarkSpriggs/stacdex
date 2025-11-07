@@ -14,7 +14,6 @@ export default function Dashboard() {
 
   return (
     <>
-      <Navbar />
       <main className="dashboard-container">
         <h1 className="dashboard-title">
           Welcome, {user?.name || "User"} 👋
