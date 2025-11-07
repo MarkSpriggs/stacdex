@@ -16,15 +16,15 @@ const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 // =============================================================
-// GET ALL ITEMS (public or for user)
+// GET ITEMS (for logged-in user only)
 // =============================================================
-router.get("/", async (req, res) => {
+router.get("/", requireAuth, async (req, res) => {
   try {
-    const items = await getAllItems();
+    const items = await getItemsByUser(req.user.id);
     res.json(items);
   } catch (err) {
-    console.error("Error fetching items:", err);
-    res.status(500).json({ error: "Failed to fetch items" });
+    console.error("Error fetching user's items:", err);
+    res.status(500).json({ error: "Failed to fetch user's items" });
   }
 });
 

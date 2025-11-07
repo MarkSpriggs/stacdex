@@ -1,0 +1,239 @@
+/* =========================================================
+   STACDEX — INVENTORY PAGE STYLES (4-COLUMN VERSION)
+   ========================================================= */
+
+/* ===== PAGE ===== */
+.inventory-page {
+  min-height: 100vh;
+  background-color: #141414; /* slightly darker for contrast */
+  color: #fff;
+  padding: 5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inventory-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+}
+
+/* ===== FILTER BAR ===== */
+.inventory-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.inventory-filters input,
+.inventory-filters select {
+  padding: 0.7rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.inventory-filters input {
+  min-width: 220px;
+}
+
+.inventory-filters select {
+  background: #fff;
+  color: #242424;
+}
+
+/* ===== CARD GRID (4 COLUMNS MAX) ===== */
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* ✅ exactly 4 across */
+  gap: 2.5rem;
+  width: 100%;
+  max-width: 1150px;
+  justify-items: center;
+  margin: 0 auto;
+}
+
+/* ===== CARD WRAPPER ===== */
+.inventory-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* ===== CARD ===== */
+.inventory-card {
+  position: relative;
+  background: #1e1e1e;
+  border-radius: 8px;
+  aspect-ratio: 2.5 / 3.5;
+  width: 100%;
+  max-width: 240px;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  overflow: visible; /* allow glow outside */
+  isolation: isolate;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
+}
+
+.inventory-card:hover {
+  transform: translateY(-8px) scale(1.04);
+}
+
+/* ===== CARD IMAGE ===== */
+.inventory-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+
+/* ===== CARD TITLE BELOW ===== */
+.card-title {
+  text-align: center;
+  margin-top: 0.6rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #fff;
+  max-width: 240px;
+}
+
+/* ===== HOVER INFO PANEL ===== */
+.card-hover-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  color: #242424;
+  padding: 0.6rem 0.4rem;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 8px 8px;
+  z-index: 2;
+}
+
+.inventory-card:hover .card-hover-info {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-hover-info p {
+  margin: 0.25rem 0;
+  font-size: 0.85rem;
+}
+
+.card-hover-info .value {
+  font-weight: 700;
+  color: #fc751c;
+}
+
+/* =========================================================
+   VALUE TIERS (LARGER GLOW EFFECTS)
+   ========================================================= */
+
+/* ----- Common Tier ----- */
+.tier-common {
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.1);
+}
+
+/* ----- Blue Tier (Rare <$500) ----- */
+.tier-blue {
+  box-shadow: 0 0 30px rgba(0, 140, 255, 0.7);
+}
+
+/* ----- Red Tier ($500–$999) ----- */
+.tier-red {
+  box-shadow: 0 0 45px rgba(255, 60, 60, 0.8);
+  animation: redPulse 2s ease-in-out infinite;
+}
+
+/* ----- Gold Tier ($1000+) ----- */
+.tier-gold {
+  position: relative;
+  box-shadow: 0 0 55px rgba(255, 215, 0, 0.9);
+}
+
+.tier-gold::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  right: -14px;
+  bottom: -14px;
+  border-radius: 12px;
+  background: linear-gradient(120deg, gold, white, gold);
+  background-size: 200% 200%;
+  animation: goldShimmer 3s linear infinite;
+  filter: blur(8px);
+  opacity: 0.8;
+  z-index: -1;
+}
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes goldShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes redPulse {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(255, 60, 60, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 55px rgba(255, 0, 0, 1);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .inventory-grid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 900px;
+  }
+}
+
+@media (max-width: 750px) {
+  .inventory-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 650px;
+  }
+}
+
+@media (max-width: 500px) {
+  .inventory-grid {
+    grid-template-columns: 1fr;
+    max-width: 350px;
+  }
+}
+
+/* =========================================================
+   NO RESULTS
+   ========================================================= */
+
+.no-results {
+  color: #bbb;
+  text-align: center;
+  margin-top: 3rem;
+}

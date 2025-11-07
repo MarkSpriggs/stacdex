@@ -40,7 +40,7 @@
 
 .landing-title {
   font-size: 2rem;
-  color: #0B5A48;
+  color: #000000;
   margin-bottom: 0.5rem;
   font-weight: 700;
 }
@@ -53,7 +53,7 @@
 }
 
 .landing-btn {
-  background: #0B5A48;
+  background: #d65d0c;
   color: white;
   font-size: 1.1rem;
   font-weight: 600;

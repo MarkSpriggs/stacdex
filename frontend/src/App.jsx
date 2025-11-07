@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Account from "./pages/Account";
 import { useAuth } from "./context/AuthContext";
+import InventorySearch from "./pages/InventorySearch";
 import "./index.css";
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/account" element={<Account/>} />
+          <Route path="/dashboard/inventory" element={<InventorySearch/>} />
         </Route>
 
         {/* ===== Catch-all redirect ===== */}
