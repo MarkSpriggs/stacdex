@@ -81,6 +81,35 @@ export default function CardDetails() {
     setIsEditing(false);
   };
 
+  const handleDeleteCard = async () => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete "${card.title}"? This action cannot be undone.`
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/items/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to delete card");
+      }
+
+      // Navigate back to inventory after successful deletion
+      navigate("/dashboard/inventory");
+    } catch (err) {
+      console.error("Error deleting card:", err);
+      alert("Failed to delete card. Please try again.");
+    }
+  };
+
   if (loading) {
     return <div className="card-details-page">Loading card details...</div>;
   }
@@ -242,7 +271,10 @@ export default function CardDetails() {
                 >
                   Edit Card
                 </button>
-                <button className="action-button delete-button">
+                <button
+                  className="action-button delete-button"
+                  onClick={handleDeleteCard}
+                >
                   Delete Card
                 </button>
               </>

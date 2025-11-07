@@ -48,6 +48,9 @@ router.get("/:id", async (req, res) => {
 // =============================================================
 router.post("/", requireAuth, upload.single("image"), async (req, res) => {
   try {
+    console.log("Received POST /items request");
+    console.log("Request body:", req.body);
+
     const safeFileName = req.file ? req.file.originalname.replace(/\s+/g, "-") : null;
     const fileKey = safeFileName ? `cards/${Date.now()}-${safeFileName}` : null;
 
@@ -64,16 +67,52 @@ router.post("/", requireAuth, upload.single("image"), async (req, res) => {
       imageUrl = `https://${process.env.S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`;
     }
 
+    // Process form data - convert string booleans and handle types
+    const processedData = { ...req.body };
+
+    // Convert string booleans to actual booleans
+    if (processedData.rookie === "true") processedData.rookie = true;
+    if (processedData.rookie === "false") processedData.rookie = false;
+    if (processedData.autograph === "true") processedData.autograph = true;
+    if (processedData.autograph === "false") processedData.autograph = false;
+
+    // Convert numeric strings to numbers or null
+    const numericFields = [
+      "category_id",
+      "status_id",
+      "grading_company_id",
+      "condition_id",
+      "year",
+      "patch_count",
+      "numbered_to",
+      "grade_value",
+      "market_value",
+      "price_listed",
+    ];
+
+    numericFields.forEach((field) => {
+      if (processedData[field] === "" || processedData[field] === undefined) {
+        processedData[field] = null;
+      } else if (processedData[field] !== null) {
+        const num = Number(processedData[field]);
+        processedData[field] = isNaN(num) ? null : num;
+      }
+    });
+
+    console.log("Processed data:", processedData);
+
     const newItem = await createItem({
       user_id: req.user.id,
-      ...req.body,
+      ...processedData,
       image_url: imageUrl,
     });
 
+    console.log("Created item:", newItem);
     res.status(201).json(newItem);
   } catch (err) {
     console.error("Error creating item:", err);
-    res.status(500).json({ error: "Failed to create item" });
+    console.error("Error stack:", err.stack);
+    res.status(500).json({ error: "Failed to create item", details: err.message });
   }
 });
 

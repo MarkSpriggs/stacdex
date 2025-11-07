@@ -10,6 +10,16 @@
   justify-content: flex-start;
 }
 
+/* ===== GREETING ===== */
+.dashboard-greeting {
+  align-self: flex-start;
+  color: #e0e0e0;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  margin-left: 1rem;
+}
+
 .dashboard-title {
   color: #e0e0e0;
   font-size: 2.5rem;
@@ -131,6 +141,35 @@
   color: #ffffff;
   max-width: 600px;
   opacity: 0.95;
+}
+
+/* ===== COMING SOON CARD ===== */
+.coming-soon-card {
+  position: relative;
+  cursor: not-allowed;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.coming-soon-card:hover {
+  transform: none;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border-color: transparent;
+}
+
+.coming-soon-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #fc751c;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 2;
 }
 
 /* ===== LOGOUT BUTTON ===== */

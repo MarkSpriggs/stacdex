@@ -99,17 +99,26 @@ export default function AddCard() {
         formDataToSend.append("image", imageFile);
       }
 
-      // Append all form fields (converting empty strings to null for optional fields)
+      // Required fields validation
+      if (!formData.title || !formData.category_id || !formData.status_id) {
+        throw new Error("Please fill in all required fields (Title, Category, Status)");
+      }
+
+      // Append all form fields with proper type handling
       Object.keys(formData).forEach((key) => {
         let value = formData[key];
 
-        // Convert empty strings to null for numeric/optional fields
-        if (value === "") {
+        // Skip empty optional fields
+        if (value === "" || value === null || value === undefined) {
           if (
             [
               "grading_company_id",
               "condition_id",
+              "player_name",
+              "team_name",
               "year",
+              "brand",
+              "sub_brand",
               "patch_count",
               "numbered_to",
               "grade_value",
@@ -118,21 +127,36 @@ export default function AddCard() {
               "ebay_url",
               "date_listed",
               "date_sold",
+              "tags",
             ].includes(key)
           ) {
-            value = null;
+            return; // Skip this field entirely
           }
         }
 
-        // Convert tags string to array
+        // Convert tags string to PostgreSQL array format
         if (key === "tags" && value) {
-          value = value.split(",").map((tag) => tag.trim());
+          const tagsArray = value.split(",").map((tag) => tag.trim()).filter(tag => tag.length > 0);
+          if (tagsArray.length > 0) {
+            formDataToSend.append(key, `{${tagsArray.join(",")}}`);
+          }
+          return;
         }
 
-        if (value !== null) {
-          formDataToSend.append(key, value);
+        // Ensure booleans are sent as strings for FormData
+        if (typeof value === "boolean") {
+          formDataToSend.append(key, value.toString());
+          return;
         }
+
+        // Append the value
+        formDataToSend.append(key, value);
       });
+
+      console.log("Submitting form data:");
+      for (let [key, value] of formDataToSend.entries()) {
+        console.log(`${key}: ${value}`);
+      }
 
       const res = await fetch(`${import.meta.env.VITE_API_URL}/items`, {
         method: "POST",
@@ -143,14 +167,15 @@ export default function AddCard() {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to create card");
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to create card");
       }
 
       const newCard = await res.json();
       navigate(`/dashboard/inventory/${newCard.id}`);
     } catch (err) {
       console.error("Error creating card:", err);
-      setError("Failed to create card. Please try again.");
+      setError(err.message || "Failed to create card. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
