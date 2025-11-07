@@ -10,6 +10,7 @@ import {
   getItemsByUser,
   updateItem,
   deleteItem,
+  getStatusIdByName,
 } from "../db/queries/items.js";
 
 const router = express.Router();
@@ -89,6 +90,15 @@ router.put("/:id", requireAuth, upload.single("image"), async (req, res) => {
 
     let updatedFields = { ...req.body };
 
+    // Convert status_name to status_id if provided
+    if (updatedFields.status_name) {
+      const statusId = await getStatusIdByName(updatedFields.status_name);
+      if (statusId) {
+        updatedFields.status_id = statusId;
+      }
+      delete updatedFields.status_name; // Remove status_name from update fields
+    }
+
     if (req.file) {
       const safeFileName = req.file.originalname.replace(/\s+/g, "-");
       const fileKey = `cards/${Date.now()}-${safeFileName}`;
@@ -111,8 +121,11 @@ router.put("/:id", requireAuth, upload.single("image"), async (req, res) => {
       updatedFields.image_url = `https://${process.env.S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`;
     }
 
-    const updated = await updateItem(id, updatedFields);
-    res.json(updated);
+    await updateItem(id, updatedFields);
+
+    // Fetch the full item with joins to return consistent data
+    const fullItem = await getItemById(id);
+    res.json(fullItem);
   } catch (err) {
     console.error("Error updating item:", err);
     res.status(500).json({ error: "Failed to update item" });

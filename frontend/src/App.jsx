@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Account from "./pages/Account";
 import { useAuth } from "./context/AuthContext";
 import InventorySearch from "./pages/InventorySearch";
+import CardDetails from "./pages/CardDetails";
 import "./index.css";
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/account" element={<Account/>} />
           <Route path="/dashboard/inventory" element={<InventorySearch/>} />
+          <Route path="/dashboard/inventory/:id" element={<CardDetails/>} />
         </Route>
 
         {/* ===== Catch-all redirect ===== */}

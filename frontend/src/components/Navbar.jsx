@@ -13,12 +13,26 @@ export default function Navbar() {
     navigate("/account");
   };
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 18) return "Good afternoon";
+    return "Good evening";
+  };
+
   return (
     <nav className="navbar">
       {/* Logo on left */}
       <Link to="/dashboard" className="navbar-logo">
         <img src={logo} alt="StacDex Logo" />
       </Link>
+
+      {/* Greeting in center */}
+      {user && (
+        <div className="navbar-greeting">
+          {getGreeting()}, {user.name || "User"}
+        </div>
+      )}
 
       {/* Profile / Account on right */}
       {user && (

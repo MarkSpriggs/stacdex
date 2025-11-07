@@ -13,6 +13,7 @@
   z-index: 1000;
   font-family: Arial, sans-serif;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  gap: 2rem;
 }
 
 /* Space below fixed navbar */
@@ -37,6 +38,17 @@ body {
 
 .navbar-logo img:hover {
   transform: scale(1.04);
+}
+
+/* ================= GREETING ================= */
+.navbar-greeting {
+  flex: 1;
+  text-align: left;
+  margin-left: 2rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #242424;
+  letter-spacing: 0.3px;
 }
 
 /* ================= ACCOUNT AVATAR ================= */
@@ -65,14 +77,25 @@ body {
   .navbar {
     padding: 0 20px;
     height: 60px;
+    gap: 1rem;
   }
 
   .navbar-logo img {
     height: 36px;
   }
 
+  .navbar-greeting {
+    font-size: 1rem;
+  }
+
   .navbar-avatar {
     width: 36px;
     height: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-greeting {
+    font-size: 0.875rem;
   }
 }

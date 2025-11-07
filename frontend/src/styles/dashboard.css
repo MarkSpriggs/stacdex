@@ -1,9 +1,9 @@
 /* ===== Dashboard Styles ===== */
 
 .dashboard-container {
-  min-height: 100vh; /* full height background */
-  padding: 4rem 2rem;
-  background-color: #242424; /* dark charcoal */
+  min-height: 100vh;
+  padding: 6rem 2rem 4rem;
+  background-color: #242424;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,7 +11,7 @@
 }
 
 .dashboard-title {
-  color: #ffffff;
+  color: #e0e0e0;
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 3rem;
@@ -24,54 +24,113 @@
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1200px;
   padding: 0 1rem;
 }
 
 /* ===== CARDS ===== */
 .dashboard-card {
   background: #ffffff;
-  border-radius: 1px;
-  padding: 2rem;
-  min-height: 260px; /* makes them more square */
+  border-radius: 16px;
+  padding: 2.5rem;
+  min-height: 280px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(252, 117, 28, 0.05) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.dashboard-card:hover::before {
+  opacity: 1;
 }
 
 .dashboard-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+  border-color: #fc751c;
+}
+
+.card-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover .card-icon {
+  transform: scale(1.1);
 }
 
 .dashboard-card h2 {
   color: #242424;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 0.75rem;
   position: relative;
-}
-
-.dashboard-card h2::after {
-  content: "";
-  display: block;
-  width: 40px;
-  height: 3px;
-  background-color: #fc751c; /* orange accent line */
-  margin: 0.5rem auto 0;
-  border-radius: 2px;
+  z-index: 1;
 }
 
 .dashboard-card p {
-  color: #555;
+  color: #666;
   font-size: 1rem;
   margin-top: 0.75rem;
-  line-height: 1.5;
-  max-width: 80%;
+  line-height: 1.6;
+  text-align: center;
+  z-index: 1;
+  position: relative;
+}
+
+/* ===== FEATURED CARD (Inventory Search) ===== */
+.featured-card {
+  grid-column: 1 / -1;
+  min-height: 320px;
+  background: #fc751c;
+  border: 2px solid #fc751c;
+}
+
+.featured-card::before {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+  opacity: 1;
+}
+
+.featured-card:hover {
+  box-shadow: 0 20px 60px rgba(252, 117, 28, 0.5);
+  border-color: #e86812;
+  background: #e86812;
+}
+
+.featured-card .card-icon {
+  font-size: 5rem;
+  margin-bottom: 1.5rem;
+}
+
+.featured-card h2 {
+  font-size: 2rem;
+  color: #ffffff;
+}
+
+.featured-card p {
+  font-size: 1.125rem;
+  color: #ffffff;
+  max-width: 600px;
+  opacity: 0.95;
 }
 
 /* ===== LOGOUT BUTTON ===== */
@@ -95,7 +154,7 @@
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .dashboard-container {
-    padding: 3rem 1rem;
+    padding: 5rem 1rem 3rem;
   }
 
   .dashboard-title {
@@ -104,6 +163,22 @@
   }
 
   .dashboard-card {
-    min-height: 220px;
+    min-height: 240px;
+  }
+
+  .featured-card {
+    min-height: 280px;
+  }
+
+  .featured-card .card-icon {
+    font-size: 4rem;
+  }
+
+  .featured-card h2 {
+    font-size: 1.75rem;
+  }
+
+  .featured-card p {
+    font-size: 1rem;
   }
 }

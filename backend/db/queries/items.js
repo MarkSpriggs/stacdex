@@ -165,3 +165,14 @@ export async function deleteItem(id) {
   const { rows: [item] } = await db.query(sql, [id]);
   return item;
 }
+
+// =============================================================
+// GET STATUS ID BY NAME
+// =============================================================
+export async function getStatusIdByName(statusName) {
+  const sql = `
+    SELECT id FROM status WHERE LOWER(name) = LOWER($1);
+  `;
+  const { rows } = await db.query(sql, [statusName]);
+  return rows.length > 0 ? rows[0].id : null;
+}
