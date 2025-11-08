@@ -1,90 +1,156 @@
-/* =============================
-   REGISTER FORM STYLES
-============================= */
+/* ===== Register Page Styles ===== */
 
-.auth-container {
-  max-width: 400px;
-  margin: 5rem auto;
-  padding: 2rem;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+.register-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #242424;
+  padding: 1rem;
 }
 
-.auth-container h2 {
+.register-box {
+  background: #2a2a2a;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 440px;
+  width: 100%;
   text-align: center;
-  color: #0b5a48; /* Southern Midnight */
-  margin-bottom: 1.5rem;
-  font-weight: 700;
+  padding: 3rem 2.5rem;
+  animation: fadeIn 0.6s ease-in-out;
 }
 
-.auth-form {
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.register-logo {
+  height: 70px;
+  width: auto;
+  margin-bottom: 1.5rem;
+}
+
+.register-title {
+  font-size: 2.5rem;
+  color: #fc751c;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.register-subtitle {
+  color: #999;
+  font-size: 1rem;
+  margin-bottom: 2.5rem;
+  font-weight: 400;
+}
+
+.register-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.auth-form label {
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: #333;
-}
-
-.auth-form input {
-  margin-top: 0.4rem;
-  padding: 0.7rem;
-  border: 1px solid #ccc;
+.register-form input {
+  width: 100%;
+  padding: 0.875rem 1rem;
   border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #1a1a1a;
+  color: #e0e0e0;
   font-size: 1rem;
-  transition: border-color 0.2s ease;
+  font-family: inherit;
+  transition: all 0.2s ease;
 }
 
-.auth-form input:focus {
-  border-color: #0b5a48;
+.register-form input:focus {
   outline: none;
+  border-color: #fc751c;
+  box-shadow: 0 0 0 3px rgba(252, 117, 28, 0.1);
 }
 
-button {
-  background-color: #0b5a48;
-  color: white;
-  padding: 0.8rem;
-  border: none;
-  border-radius: 8px;
+.register-form input::placeholder {
+  color: #666;
+}
+
+.register-btn {
+  width: 100%;
+  padding: 0.875rem;
+  background: #fc751c;
+  color: #fff;
   font-weight: 600;
   font-size: 1rem;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  margin-top: 0.5rem;
+  transition: all 0.2s ease;
 }
 
-button:hover {
-  background-color: #0d6b56;
+.register-btn:hover:not(:disabled) {
+  background: #e86812;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(252, 117, 28, 0.3);
 }
 
-button:disabled {
-  opacity: 0.7;
+.register-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.register-btn:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
-.error {
-  color: red;
-  font-size: 0.9rem;
-  margin-top: -0.5rem;
+.register-error {
+  color: #f44336;
+  margin: -0.5rem 0 0.5rem 0;
+  font-size: 0.875rem;
   text-align: center;
+  background: rgba(244, 67, 54, 0.1);
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid rgba(244, 67, 54, 0.3);
 }
 
-.switch-link {
-  text-align: center;
-  margin-top: 1.2rem;
+.register-footer {
+  margin-top: 1.5rem;
   font-size: 0.95rem;
+  color: #999;
 }
 
-.switch-link a {
-  color: #0b5a48;
-  text-decoration: none;
+.register-link {
+  color: #fc751c;
   font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-.switch-link a:hover {
+.register-link:hover {
+  color: #e86812;
   text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .register-box {
+    padding: 2rem 1.5rem;
+  }
+
+  .register-title {
+    font-size: 2rem;
+  }
+
+  .register-logo {
+    height: 60px;
+  }
 }

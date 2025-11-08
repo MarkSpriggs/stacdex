@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/inventorySearch.css";
 import DefaultCard from "../assets/default_card.png";
 
 export default function InventorySearch() {
   const { token } = useAuth();
+  const location = useLocation();
   const [cards, setCards] = useState([]);
   const [filteredCards, setFilteredCards] = useState([]);
   const [search, setSearch] = useState("");
@@ -16,9 +17,23 @@ export default function InventorySearch() {
   const [autographOnly, setAutographOnly] = useState(false);
   const [numberedOnly, setNumberedOnly] = useState(false);
   const [patchedOnly, setPatchedOnly] = useState(false);
+  const [gradedOnly, setGradedOnly] = useState(false);
   const [sort, setSort] = useState("newest");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  // Apply URL parameters on mount
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+
+    if (params.get('status')) setStatus(params.get('status'));
+    if (params.get('category')) setCategory(params.get('category'));
+    if (params.get('rookieOnly') === 'true') setRookieOnly(true);
+    if (params.get('autographOnly') === 'true') setAutographOnly(true);
+    if (params.get('numberedOnly') === 'true') setNumberedOnly(true);
+    if (params.get('patchedOnly') === 'true') setPatchedOnly(true);
+    if (params.get('graded') === 'true') setGradedOnly(true);
+  }, [location.search]);
 
   // Fetch user’s items
   useEffect(() => {
@@ -63,6 +78,7 @@ export default function InventorySearch() {
     if (autographOnly) results = results.filter((c) => c.autograph === true);
     if (numberedOnly) results = results.filter((c) => c.numbered_to && c.numbered_to > 0);
     if (patchedOnly) results = results.filter((c) => c.patch_count && c.patch_count > 0);
+    if (gradedOnly) results = results.filter((c) => c.grading_company_name);
 
     if (sort === "value-high") results.sort((a, b) => (b.market_value || 0) - (a.market_value || 0));
     if (sort === "value-low") results.sort((a, b) => (a.market_value || 0) - (b.market_value || 0));
@@ -70,7 +86,7 @@ export default function InventorySearch() {
     if (sort === "oldest") results.sort((a, b) => new Date(a.date_created) - new Date(b.date_created));
 
     setFilteredCards(results);
-  }, [search, category, status, brand, rookieOnly, autographOnly, numberedOnly, patchedOnly, sort, cards]);
+  }, [search, category, status, brand, rookieOnly, autographOnly, numberedOnly, patchedOnly, gradedOnly, sort, cards]);
 
   // determine value tier for glows
   const getValueTier = (value) => {

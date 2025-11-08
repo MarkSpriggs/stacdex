@@ -1,11 +1,11 @@
-// src/pages/Register.jsx
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/register.css";
+import logo from "../assets/logo.png";
 
 export default function Register() {
-  const { login } = useAuth(); // from AuthContext
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -42,10 +42,8 @@ export default function Register() {
         throw new Error(data.error || "Registration failed");
       }
 
-      // Save token & user in AuthContext
       login(data.token);
-
-      navigate("/dashboard"); // or whatever page you want after login
+      navigate("/dashboard");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -54,52 +52,56 @@ export default function Register() {
   };
 
   return (
-    <div className="auth-container">
-      <h2>Create Account</h2>
-      <form onSubmit={handleSubmit} className="auth-form">
-        <label>
-          Name
+    <div className="register-container">
+      <div className="register-box">
+        <img src={logo} alt="StacDex logo" className="register-logo" />
+
+        <h1 className="register-title">Create Account</h1>
+        <p className="register-subtitle">Join StacDex and manage your collection</p>
+
+        <form onSubmit={handleSubmit} className="register-form">
           <input
             type="text"
             name="name"
+            placeholder="Full Name"
             value={formData.name}
             onChange={handleChange}
             required
           />
-        </label>
 
-        <label>
-          Email
           <input
             type="email"
             name="email"
+            placeholder="Email"
             value={formData.email}
             onChange={handleChange}
             required
           />
-        </label>
 
-        <label>
-          Password
           <input
             type="password"
             name="password"
+            placeholder="Password (min. 6 characters)"
             value={formData.password}
             onChange={handleChange}
             required
+            minLength={6}
           />
-        </label>
 
-        {error && <p className="error">{error}</p>}
+          {error && <p className="register-error">{error}</p>}
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Registering..." : "Register"}
-        </button>
-      </form>
+          <button type="submit" className="register-btn" disabled={loading}>
+            {loading ? "Creating Account..." : "Create Account"}
+          </button>
+        </form>
 
-      <p className="switch-link">
-        Already have an account? <a href="/login">Log in</a>
-      </p>
+        <p className="register-footer">
+          Already have an account?{" "}
+          <Link to="/login" className="register-link">
+            Sign in
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }
