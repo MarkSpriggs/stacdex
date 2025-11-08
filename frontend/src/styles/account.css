@@ -21,6 +21,20 @@
   gap: 0.5rem;
 }
 
+.greeting-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.greeting-icon {
+  width: 40px;
+  height: 40px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: #fc751c;
+}
+
 .account-greeting .greeting-text {
   font-weight: 300;
   font-size: 1.5rem;
@@ -112,73 +126,85 @@
   border-bottom: 2px solid rgba(252, 117, 28, 0.4);
 }
 
-/* ===== TOP 5 CARDS ===== */
-.top-cards-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+/* ===== TOP 5 CARDS (HORIZONTAL) ===== */
+.top-cards-horizontal {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
 }
 
-.top-card-item {
-  display: grid;
-  grid-template-columns: 50px 80px 1fr auto;
-  align-items: center;
-  gap: 1.5rem;
+.horizontal-card-item {
   background: #2a2a2a;
-  padding: 1rem;
-  border-radius: 8px;
+  border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
 }
 
-.top-card-item:hover {
-  background: rgba(255, 255, 255, 0.08);
+.horizontal-card-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
   border-color: rgba(252, 117, 28, 0.4);
-  transform: translateX(4px);
 }
 
-.top-card-rank {
-  font-size: 1.5rem;
+.horizontal-card-rank {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: #fc751c;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
   font-weight: 700;
-  color: #fc751c;
-  text-align: center;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.top-card-image {
-  width: 80px;
-  height: 112px;
+.horizontal-card-image {
+  width: 100%;
+  aspect-ratio: 2.5 / 3.5;
   object-fit: cover;
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px 12px 0 0;
 }
 
-.top-card-info {
-  flex: 1;
-  min-width: 0;
+.horizontal-card-info {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.top-card-info h4 {
-  font-size: 1rem;
+.horizontal-card-info h4 {
+  font-size: 0.875rem;
   font-weight: 600;
   color: #e0e0e0;
-  margin: 0 0 0.25rem 0;
+  margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.top-card-details {
-  font-size: 0.875rem;
+.horizontal-card-player {
+  font-size: 0.75rem;
   color: #999;
   margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.top-card-value {
-  font-size: 1.25rem;
+.horizontal-card-value {
+  font-size: 1rem;
   font-weight: 700;
   color: #4caf50;
-  white-space: nowrap;
+  margin: 0;
 }
 
 /* ===== PROFILE CARD ===== */
@@ -560,21 +586,14 @@
     gap: 2rem;
   }
 
-  .top-card-item {
-    grid-template-columns: 40px 60px 1fr;
+  .top-cards-horizontal {
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
 
-  .top-card-image {
-    width: 60px;
-    height: 84px;
-  }
-
-  .top-card-value {
-    grid-column: 1 / -1;
-    text-align: right;
-    padding-top: 0.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  .greeting-icon {
+    width: 32px;
+    height: 32px;
   }
 
   .account-message {
@@ -591,6 +610,16 @@
 
 @media (max-width: 480px) {
   .detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .top-cards-horizontal {
+    grid-template-columns: 1fr;
+  }
+
+  .greeting-with-icon {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;

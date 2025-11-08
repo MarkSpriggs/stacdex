@@ -153,75 +153,57 @@ export default function Account() {
 
   if (!user || loading) return <div className="account-page">Loading...</div>;
 
+  const getGreetingIcon = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) {
+      return (
+        <svg className="greeting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="5" />
+          <line x1="12" y1="1" x2="12" y2="3" />
+          <line x1="12" y1="21" x2="12" y2="23" />
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+          <line x1="1" y1="12" x2="3" y2="12" />
+          <line x1="21" y1="12" x2="23" y2="12" />
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        </svg>
+      );
+    }
+    if (hour < 18) {
+      return (
+        <svg className="greeting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2" />
+          <path d="M12 20v2" />
+          <path d="m4.93 4.93 1.41 1.41" />
+          <path d="m17.66 17.66 1.41 1.41" />
+          <path d="M2 12h2" />
+          <path d="M20 12h2" />
+          <path d="m6.34 17.66-1.41 1.41" />
+          <path d="m19.07 4.93-1.41 1.41" />
+        </svg>
+      );
+    }
+    return (
+      <svg className="greeting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+      </svg>
+    );
+  };
+
   return (
     <div className="account-page">
       {/* ===== GREETING ===== */}
       <div className="account-greeting">
-        <span className="greeting-text">{getGreeting()}</span>
+        <div className="greeting-with-icon">
+          {getGreetingIcon()}
+          <span className="greeting-text">{getGreeting()}</span>
+        </div>
         <span className="user-name">{user.name}</span>
       </div>
 
-      {/* ===== STATS GRID ===== */}
-      <div className="account-stats-grid">
-        <div className="stat-card">
-          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-            <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-            <line x1="12" y1="22.08" x2="12" y2="12" />
-          </svg>
-          <div className="stat-content">
-            <h3>Total Cards</h3>
-            <p className="stat-value">{totalCards}</p>
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="12" y1="1" x2="12" y2="23" />
-            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-          </svg>
-          <div className="stat-content">
-            <h3>Collection Value</h3>
-            <p className="stat-value">${totalValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-          </div>
-        </div>
-      </div>
-
-      {/* ===== TOP 5 CARDS ===== */}
-      {topCards.length > 0 && (
-        <section className="account-section">
-          <h2 className="section-title">Your Most Valuable Cards</h2>
-          <div className="top-cards-list">
-            {topCards.map((card, index) => (
-              <div
-                key={card.id}
-                className="top-card-item"
-                onClick={() => navigate(`/dashboard/inventory/${card.id}`)}
-              >
-                <div className="top-card-rank">#{index + 1}</div>
-                <img
-                  src={card.image_url || DefaultCard}
-                  alt={card.title}
-                  className="top-card-image"
-                />
-                <div className="top-card-info">
-                  <h4>{card.title}</h4>
-                  <p className="top-card-details">
-                    {card.player_name && <span>{card.player_name}</span>}
-                    {card.year && <span> • {card.year}</span>}
-                    {card.rookie && <span> • Rookie</span>}
-                  </p>
-                </div>
-                <div className="top-card-value">
-                  ${Number(card.market_value).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* ===== PROFILE SECTION ===== */}
+      {/* ===== PROFILE SECTION (MOVED TO TOP) ===== */}
       <section className="account-section">
         <h2 className="section-title">Profile Settings</h2>
 
@@ -266,6 +248,62 @@ export default function Account() {
           </div>
         </div>
       </section>
+
+      {/* ===== STATS GRID ===== */}
+      <div className="account-stats-grid">
+        <div className="stat-card">
+          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+            <line x1="12" y1="22.08" x2="12" y2="12" />
+          </svg>
+          <div className="stat-content">
+            <h3>Total Cards</h3>
+            <p className="stat-value">{totalCards}</p>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="12" y1="1" x2="12" y2="23" />
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+          </svg>
+          <div className="stat-content">
+            <h3>Collection Value</h3>
+            <p className="stat-value">${totalValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* ===== TOP 5 CARDS (HORIZONTAL) ===== */}
+      {topCards.length > 0 && (
+        <section className="account-section">
+          <h2 className="section-title">Your Most Valuable Cards</h2>
+          <div className="top-cards-horizontal">
+            {topCards.map((card, index) => (
+              <div
+                key={card.id}
+                className="horizontal-card-item"
+                onClick={() => navigate(`/dashboard/inventory/${card.id}`)}
+              >
+                <div className="horizontal-card-rank">#{index + 1}</div>
+                <img
+                  src={card.image_url || DefaultCard}
+                  alt={card.title}
+                  className="horizontal-card-image"
+                />
+                <div className="horizontal-card-info">
+                  <h4>{card.title}</h4>
+                  <p className="horizontal-card-player">{card.player_name || "—"}</p>
+                  <p className="horizontal-card-value">
+                    ${Number(card.market_value).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ===== SECURITY SECTION ===== */}
       <section className="account-section">
