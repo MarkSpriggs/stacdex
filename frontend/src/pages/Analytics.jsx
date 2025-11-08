@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/analytics.css";
+import DefaultCard from "../assets/default_card.png";
 
 export default function Analytics() {
   const { token } = useAuth();
@@ -105,7 +106,10 @@ export default function Analytics() {
       <div className="analytics-grid">
         {/* Summary Stats */}
         <div className="stat-card featured">
-          <div className="stat-icon">💰</div>
+          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="12" y1="1" x2="12" y2="23" />
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+          </svg>
           <div className="stat-content">
             <h3>Total Collection Value</h3>
             <p className="stat-value">${totalValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
@@ -113,7 +117,11 @@ export default function Analytics() {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">📦</div>
+          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+            <line x1="12" y1="22.08" x2="12" y2="12" />
+          </svg>
           <div className="stat-content">
             <h3>Total Cards</h3>
             <p className="stat-value">{totalCards}</p>
@@ -121,7 +129,11 @@ export default function Analytics() {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">📊</div>
+          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg>
           <div className="stat-content">
             <h3>Average Value</h3>
             <p className="stat-value">${averageValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
@@ -129,7 +141,9 @@ export default function Analytics() {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">⭐</div>
+          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg>
           <div className="stat-content">
             <h3>Rookie Cards</h3>
             <p className="stat-value">{rookieCount}</p>
@@ -137,7 +151,12 @@ export default function Analytics() {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">✍️</div>
+          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M12 19l7-7 3 3-7 7-3-3z" />
+            <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
+            <path d="M2 2l7.586 7.586" />
+            <circle cx="11" cy="11" r="2" />
+          </svg>
           <div className="stat-content">
             <h3>Autographs</h3>
             <p className="stat-value">{autographCount}</p>
@@ -145,7 +164,10 @@ export default function Analytics() {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">🏆</div>
+          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="12" cy="8" r="7" />
+            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+          </svg>
           <div className="stat-content">
             <h3>Graded Cards</h3>
             <p className="stat-value">{gradedCount}</p>
@@ -226,7 +248,7 @@ export default function Analytics() {
                 >
                   <div className="top-card-rank">#{index + 1}</div>
                   <img
-                    src={card.image_url || "/default_card.png"}
+                    src={card.image_url || DefaultCard}
                     alt={card.title}
                     className="top-card-image"
                   />

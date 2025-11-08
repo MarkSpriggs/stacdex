@@ -11,6 +11,11 @@ export default function InventorySearch() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("");
+  const [brand, setBrand] = useState("");
+  const [rookieOnly, setRookieOnly] = useState(false);
+  const [autographOnly, setAutographOnly] = useState(false);
+  const [numberedOnly, setNumberedOnly] = useState(false);
+  const [patchedOnly, setPatchedOnly] = useState(false);
   const [sort, setSort] = useState("newest");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -45,20 +50,27 @@ export default function InventorySearch() {
         (c) =>
           c.title?.toLowerCase().includes(s) ||
           c.player_name?.toLowerCase().includes(s) ||
-          c.team_name?.toLowerCase().includes(s)
+          c.team_name?.toLowerCase().includes(s) ||
+          c.brand?.toLowerCase().includes(s)
       );
     }
 
     if (category) results = results.filter((c) => c.category_name === category);
     if (status) results = results.filter((c) => c.status_name === status);
+    if (brand) results = results.filter((c) => c.brand?.toLowerCase().includes(brand.toLowerCase()));
 
-    if (sort === "value-high") results.sort((a, b) => b.market_value - a.market_value);
-    if (sort === "value-low") results.sort((a, b) => a.market_value - b.market_value);
+    if (rookieOnly) results = results.filter((c) => c.rookie === true);
+    if (autographOnly) results = results.filter((c) => c.autograph === true);
+    if (numberedOnly) results = results.filter((c) => c.numbered_to && c.numbered_to > 0);
+    if (patchedOnly) results = results.filter((c) => c.patch_count && c.patch_count > 0);
+
+    if (sort === "value-high") results.sort((a, b) => (b.market_value || 0) - (a.market_value || 0));
+    if (sort === "value-low") results.sort((a, b) => (a.market_value || 0) - (b.market_value || 0));
     if (sort === "newest") results.sort((a, b) => new Date(b.date_created) - new Date(a.date_created));
     if (sort === "oldest") results.sort((a, b) => new Date(a.date_created) - new Date(b.date_created));
 
     setFilteredCards(results);
-  }, [search, category, status, sort, cards]);
+  }, [search, category, status, brand, rookieOnly, autographOnly, numberedOnly, patchedOnly, sort, cards]);
 
   // determine value tier for glows
   const getValueTier = (value) => {
@@ -72,40 +84,94 @@ export default function InventorySearch() {
 
   return (
     <div className="inventory-page">
-      <h1 className="inventory-title">My Inventory</h1>
+      <div className="inventory-header">
+        <h1 className="inventory-title">My Inventory</h1>
+        <p className="inventory-count">{filteredCards.length} {filteredCards.length === 1 ? 'card' : 'cards'} found</p>
+      </div>
 
       {/* ===== Search & Filters ===== */}
       <div className="inventory-filters">
-        <input
-          type="text"
-          placeholder="Search by player, team, or title..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className="filter-section main-search">
+          <input
+            type="text"
+            placeholder="Search by player, team, brand, or title..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="search-input"
+          />
+        </div>
 
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option value="">All Categories</option>
-          <option value="Football">Football</option>
-          <option value="Baseball">Baseball</option>
-          <option value="Basketball">Basketball</option>
-          <option value="Hockey">Hockey</option>
-        </select>
+        <div className="filter-section dropdowns">
+          <select value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option value="">All Categories</option>
+            <option value="Football">Football</option>
+            <option value="Baseball">Baseball</option>
+            <option value="Basketball">Basketball</option>
+            <option value="Hockey">Hockey</option>
+          </select>
 
-        <select value={status} onChange={(e) => setStatus(e.target.value)}>
-          <option value="">All Statuses</option>
-          <option value="Unlisted">Unlisted</option>
-          <option value="Listed">Listed</option>
-          <option value="Sold">Sold</option>
-          <option value="Shipping">Shipping</option>
-          <option value="Archived">Archived</option>
-        </select>
+          <select value={status} onChange={(e) => setStatus(e.target.value)}>
+            <option value="">All Statuses</option>
+            <option value="Unlisted">Unlisted</option>
+            <option value="Listed">Listed</option>
+            <option value="Sold">Sold</option>
+            <option value="Shipping">Shipping</option>
+            <option value="Archived">Archived</option>
+          </select>
 
-        <select value={sort} onChange={(e) => setSort(e.target.value)}>
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
-          <option value="value-high">Value: High → Low</option>
-          <option value="value-low">Value: Low → High</option>
-        </select>
+          <input
+            type="text"
+            placeholder="Brand..."
+            value={brand}
+            onChange={(e) => setBrand(e.target.value)}
+            className="brand-input"
+          />
+
+          <select value={sort} onChange={(e) => setSort(e.target.value)}>
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="value-high">Value: High → Low</option>
+            <option value="value-low">Value: Low → High</option>
+          </select>
+        </div>
+
+        <div className="filter-section toggles">
+          <label className="toggle-label">
+            <input
+              type="checkbox"
+              checked={rookieOnly}
+              onChange={(e) => setRookieOnly(e.target.checked)}
+            />
+            <span>Rookie Only</span>
+          </label>
+
+          <label className="toggle-label">
+            <input
+              type="checkbox"
+              checked={autographOnly}
+              onChange={(e) => setAutographOnly(e.target.checked)}
+            />
+            <span>Autograph Only</span>
+          </label>
+
+          <label className="toggle-label">
+            <input
+              type="checkbox"
+              checked={numberedOnly}
+              onChange={(e) => setNumberedOnly(e.target.checked)}
+            />
+            <span>Numbered Only</span>
+          </label>
+
+          <label className="toggle-label">
+            <input
+              type="checkbox"
+              checked={patchedOnly}
+              onChange={(e) => setPatchedOnly(e.target.checked)}
+            />
+            <span>Patch Only</span>
+          </label>
+        </div>
       </div>
 
       {/* ===== Card Grid ===== */}

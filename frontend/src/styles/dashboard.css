@@ -2,7 +2,7 @@
 
 .dashboard-container {
   min-height: 100vh;
-  padding: 6rem 2rem 4rem;
+  padding: 120px 3rem 4rem;
   background-color: #242424;
   display: flex;
   flex-direction: column;
@@ -12,12 +12,29 @@
 
 /* ===== GREETING ===== */
 .dashboard-greeting {
-  align-self: flex-start;
+  width: 100%;
+  max-width: 1200px;
   color: #e0e0e0;
-  font-size: 2rem;
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dashboard-greeting .greeting-text {
+  font-weight: 300;
+  font-size: 1.5rem;
+  color: #999;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-greeting .user-name {
   font-weight: 700;
-  margin-bottom: 2rem;
-  margin-left: 1rem;
+  font-size: 3rem;
+  color: #fc751c;
+  letter-spacing: -0.5px;
 }
 
 .dashboard-title {
@@ -79,13 +96,18 @@
 }
 
 .card-icon {
-  font-size: 3.5rem;
-  margin-bottom: 1rem;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 1.5rem;
   transition: all 0.3s ease;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: #fc751c;
 }
 
 .dashboard-card:hover .card-icon {
-  transform: scale(1.1);
+  transform: scale(1.15);
+  color: #242424;
 }
 
 .dashboard-card h2 {
@@ -127,8 +149,15 @@
 }
 
 .featured-card .card-icon {
-  font-size: 5rem;
+  width: 80px;
+  height: 80px;
   margin-bottom: 1.5rem;
+  color: #ffffff;
+}
+
+.featured-card:hover .card-icon {
+  color: #ffffff;
+  transform: scale(1.15);
 }
 
 .featured-card h2 {
@@ -193,7 +222,19 @@
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .dashboard-container {
-    padding: 5rem 1rem 3rem;
+    padding: 110px 1.5rem 3rem;
+  }
+
+  .dashboard-greeting {
+    margin-bottom: 2rem;
+  }
+
+  .dashboard-greeting .greeting-text {
+    font-size: 1.25rem;
+  }
+
+  .dashboard-greeting .user-name {
+    font-size: 2.25rem;
   }
 
   .dashboard-title {
@@ -209,8 +250,14 @@
     min-height: 280px;
   }
 
+  .card-icon {
+    width: 50px;
+    height: 50px;
+  }
+
   .featured-card .card-icon {
-    font-size: 4rem;
+    width: 65px;
+    height: 65px;
   }
 
   .featured-card h2 {

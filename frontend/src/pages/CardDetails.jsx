@@ -177,17 +177,66 @@ export default function CardDetails() {
               </div>
             )}
 
-            {card.manufacturer && (
+            {card.brand && (
               <div className="detail-item">
-                <span className="detail-label">Manufacturer:</span>
-                <span className="detail-value">{card.manufacturer}</span>
+                <span className="detail-label">Brand:</span>
+                <span className="detail-value">{card.brand}</span>
               </div>
             )}
 
-            {card.card_number && (
+            {card.sub_brand && (
               <div className="detail-item">
-                <span className="detail-label">Card Number:</span>
-                <span className="detail-value">{card.card_number}</span>
+                <span className="detail-label">Set:</span>
+                <span className="detail-value">{card.sub_brand}</span>
+              </div>
+            )}
+
+            {card.grading_company_name && (
+              <div className="detail-item">
+                <span className="detail-label">Grading Company:</span>
+                <span className="detail-value">{card.grading_company_name}</span>
+              </div>
+            )}
+
+            {card.grade_value && (
+              <div className="detail-item">
+                <span className="detail-label">Grade:</span>
+                <span className="detail-value grade">{card.grade_value}</span>
+              </div>
+            )}
+
+            {card.condition_name && (
+              <div className="detail-item">
+                <span className="detail-label">Condition:</span>
+                <span className="detail-value">{card.condition_name}</span>
+              </div>
+            )}
+
+            {card.numbered_to && card.numbered_to > 0 && (
+              <div className="detail-item">
+                <span className="detail-label">Numbered:</span>
+                <span className="detail-value numbered">/{card.numbered_to}</span>
+              </div>
+            )}
+
+            {card.patch_count && card.patch_count > 0 && (
+              <div className="detail-item">
+                <span className="detail-label">Patches:</span>
+                <span className="detail-value">{card.patch_count}</span>
+              </div>
+            )}
+
+            {card.rookie && (
+              <div className="detail-item">
+                <span className="detail-label">Rookie:</span>
+                <span className="detail-value badge rookie-badge">RC</span>
+              </div>
+            )}
+
+            {card.autograph && (
+              <div className="detail-item">
+                <span className="detail-label">Autograph:</span>
+                <span className="detail-value badge auto-badge">AUTO</span>
               </div>
             )}
 
@@ -196,6 +245,15 @@ export default function CardDetails() {
                 <span className="detail-label">Market Value:</span>
                 <span className="detail-value price">
                   ${Number(card.market_value).toFixed(2)}
+                </span>
+              </div>
+            )}
+
+            {card.price_listed && (
+              <div className="detail-item">
+                <span className="detail-label">Listed Price:</span>
+                <span className="detail-value">
+                  ${Number(card.price_listed).toFixed(2)}
                 </span>
               </div>
             )}

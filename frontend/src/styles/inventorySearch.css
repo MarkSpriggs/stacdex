@@ -5,53 +5,150 @@
 /* ===== PAGE ===== */
 .inventory-page {
   min-height: 100vh;
-  background-color: #141414; /* slightly darker for contrast */
+  background-color: #242424;
   color: #fff;
-  padding: 6rem 2rem 2rem 2rem;
+  padding: 110px 2rem 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+.inventory-header {
+  width: 100%;
+  max-width: 1600px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
 .inventory-title {
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 2.5rem;
+  color: #fc751c;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.inventory-count {
+  font-size: 0.95rem;
+  color: #242424;
+  font-weight: 600;
+  margin: 0;
+  background: #fc751c;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
 }
 
 /* ===== FILTER BAR ===== */
 .inventory-filters {
+  width: 100%;
+  max-width: 1600px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   gap: 1rem;
   margin-bottom: 2rem;
+  background: #2a2a2a;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.inventory-filters input,
-.inventory-filters select {
-  padding: 0.7rem 1rem;
-  border: none;
-  border-radius: 6px;
+.filter-section {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-section.main-search {
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  background: #1a1a1a;
+  border: 2px solid rgba(252, 117, 28, 0.3);
+  border-radius: 8px;
+  color: #e0e0e0;
   font-size: 1rem;
+  transition: all 0.2s;
 }
 
-.inventory-filters input {
-  min-width: 220px;
+.search-input:focus {
+  outline: none;
+  border-color: #fc751c;
+  box-shadow: 0 0 0 3px rgba(252, 117, 28, 0.1);
 }
 
-.inventory-filters select {
-  background: #fff;
-  color: #242424;
+.search-input::placeholder {
+  color: #666;
 }
 
-/* ===== CARD GRID (4 COLUMNS MAX) ===== */
+.filter-section.dropdowns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+
+.inventory-filters select,
+.brand-input {
+  padding: 0.7rem 0.9rem;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #e0e0e0;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.inventory-filters select:focus,
+.brand-input:focus {
+  outline: none;
+  border-color: #fc751c;
+  box-shadow: 0 0 0 3px rgba(252, 117, 28, 0.1);
+}
+
+.brand-input::placeholder {
+  color: #666;
+}
+
+.filter-section.toggles {
+  display: flex;
+  gap: 1.5rem;
+  padding-top: 0.25rem;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #e0e0e0;
+  user-select: none;
+}
+
+.toggle-label input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  cursor: pointer;
+  accent-color: #fc751c;
+}
+
+.toggle-label span {
+  font-weight: 500;
+}
+
+/* ===== CARD GRID (5 COLUMNS MAX) ===== */
 .inventory-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* ✅ exactly 4 across */
-  gap: 2.5rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2rem;
   width: 100%;
-  max-width: 1150px;
+  max-width: 1600px;
   justify-items: center;
   margin: 0 auto;
 }
@@ -206,6 +303,13 @@
 /* =========================================================
    RESPONSIVE
    ========================================================= */
+
+@media (max-width: 1400px) {
+  .inventory-grid {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1200px;
+  }
+}
 
 @media (max-width: 1100px) {
   .inventory-grid {
