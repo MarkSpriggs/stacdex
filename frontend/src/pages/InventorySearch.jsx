@@ -7,6 +7,8 @@ import DefaultCard from "../assets/default_card.png";
 export default function InventorySearch() {
   const { token } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+
   const [cards, setCards] = useState([]);
   const [filteredCards, setFilteredCards] = useState([]);
   const [search, setSearch] = useState("");
@@ -20,19 +22,18 @@ export default function InventorySearch() {
   const [gradedOnly, setGradedOnly] = useState(false);
   const [sort, setSort] = useState("newest");
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   // Apply URL parameters on mount
   useEffect(() => {
     const params = new URLSearchParams(location.search);
 
-    if (params.get('status')) setStatus(params.get('status'));
-    if (params.get('category')) setCategory(params.get('category'));
-    if (params.get('rookieOnly') === 'true') setRookieOnly(true);
-    if (params.get('autographOnly') === 'true') setAutographOnly(true);
-    if (params.get('numberedOnly') === 'true') setNumberedOnly(true);
-    if (params.get('patchedOnly') === 'true') setPatchedOnly(true);
-    if (params.get('graded') === 'true') setGradedOnly(true);
+    if (params.get("status")) setStatus(params.get("status"));
+    if (params.get("category")) setCategory(params.get("category"));
+    if (params.get("rookieOnly") === "true") setRookieOnly(true);
+    if (params.get("autographOnly") === "true") setAutographOnly(true);
+    if (params.get("numberedOnly") === "true") setNumberedOnly(true);
+    if (params.get("patchedOnly") === "true") setPatchedOnly(true);
+    if (params.get("graded") === "true") setGradedOnly(true);
   }, [location.search]);
 
   // Fetch user’s items
@@ -59,6 +60,7 @@ export default function InventorySearch() {
   useEffect(() => {
     let results = [...cards];
 
+    // search
     if (search) {
       const s = search.toLowerCase();
       results = results.filter(
@@ -70,30 +72,44 @@ export default function InventorySearch() {
       );
     }
 
+    // filters
     if (category) results = results.filter((c) => c.category_name === category);
     if (status) results = results.filter((c) => c.status_name === status);
     if (brand) results = results.filter((c) => c.brand?.toLowerCase().includes(brand.toLowerCase()));
-
     if (rookieOnly) results = results.filter((c) => c.rookie === true);
     if (autographOnly) results = results.filter((c) => c.autograph === true);
     if (numberedOnly) results = results.filter((c) => c.numbered_to && c.numbered_to > 0);
     if (patchedOnly) results = results.filter((c) => c.patch_count && c.patch_count > 0);
     if (gradedOnly) results = results.filter((c) => c.grading_company_name);
 
+    // sorting
     if (sort === "value-high") results.sort((a, b) => (b.market_value || 0) - (a.market_value || 0));
     if (sort === "value-low") results.sort((a, b) => (a.market_value || 0) - (b.market_value || 0));
     if (sort === "newest") results.sort((a, b) => new Date(b.date_created) - new Date(a.date_created));
     if (sort === "oldest") results.sort((a, b) => new Date(a.date_created) - new Date(b.date_created));
 
     setFilteredCards(results);
-  }, [search, category, status, brand, rookieOnly, autographOnly, numberedOnly, patchedOnly, gradedOnly, sort, cards]);
+  }, [
+    search,
+    category,
+    status,
+    brand,
+    rookieOnly,
+    autographOnly,
+    numberedOnly,
+    patchedOnly,
+    gradedOnly,
+    sort,
+    cards,
+  ]);
 
-  // determine value tier for glows
+  // Determine value tier (collector realistic)
   const getValueTier = (value) => {
-    if (value >= 1000) return "tier-gold";
-    if (value >= 500) return "tier-red";
-    if (value >= 200) return "tier-blue";
-    return "tier-common";
+    if (value >= 1000) return "tier-grail"; // Gold
+    if (value >= 200) return "tier-hit";    // Purple
+    if (value >= 50) return "tier-solid";   // Green
+    if (value >= 10) return "tier-nice";    // Blue
+    return "tier-base";                     // Gray
   };
 
   if (loading) return <div className="inventory-page">Loading your cards...</div>;
@@ -102,7 +118,9 @@ export default function InventorySearch() {
     <div className="inventory-page">
       <div className="inventory-header">
         <h1 className="inventory-title">My Inventory</h1>
-        <p className="inventory-count">{filteredCards.length} {filteredCards.length === 1 ? 'card' : 'cards'} found</p>
+        <p className="inventory-count">
+          {filteredCards.length} {filteredCards.length === 1 ? "card" : "cards"} found
+        </p>
       </div>
 
       {/* ===== Search & Filters ===== */}
@@ -152,41 +170,21 @@ export default function InventorySearch() {
         </div>
 
         <div className="filter-section toggles">
-          <label className="toggle-label">
-            <input
-              type="checkbox"
-              checked={rookieOnly}
-              onChange={(e) => setRookieOnly(e.target.checked)}
-            />
-            <span>Rookie Only</span>
-          </label>
-
-          <label className="toggle-label">
-            <input
-              type="checkbox"
-              checked={autographOnly}
-              onChange={(e) => setAutographOnly(e.target.checked)}
-            />
-            <span>Autograph Only</span>
-          </label>
-
-          <label className="toggle-label">
-            <input
-              type="checkbox"
-              checked={numberedOnly}
-              onChange={(e) => setNumberedOnly(e.target.checked)}
-            />
-            <span>Numbered Only</span>
-          </label>
-
-          <label className="toggle-label">
-            <input
-              type="checkbox"
-              checked={patchedOnly}
-              onChange={(e) => setPatchedOnly(e.target.checked)}
-            />
-            <span>Patch Only</span>
-          </label>
+          {[
+            ["rookieOnly", "Rookie Only"],
+            ["autographOnly", "Autograph Only"],
+            ["numberedOnly", "Numbered Only"],
+            ["patchedOnly", "Patch Only"],
+          ].map(([state, label]) => (
+            <label key={label} className="toggle-label">
+              <input
+                type="checkbox"
+                checked={eval(state)}
+                onChange={(e) => eval(`set${state.charAt(0).toUpperCase() + state.slice(1)}(e.target.checked)`)}
+              />
+              <span>{label}</span>
+            </label>
+          ))}
         </div>
       </div>
 
@@ -205,7 +203,7 @@ export default function InventorySearch() {
                   className="inventory-card-img"
                 />
 
-                {/* Hover info (player/value/status) */}
+                {/* Hover info */}
                 <div className="card-hover-info">
                   <p>{card.player_name}</p>
                   <p className="value">
@@ -215,7 +213,6 @@ export default function InventorySearch() {
                 </div>
               </div>
 
-              {/* Title below the card */}
               <p className="card-title">{card.title}</p>
             </div>
           ))

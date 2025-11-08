@@ -1,5 +1,5 @@
 /* =========================================================
-   STACDEX — INVENTORY PAGE STYLES (4-COLUMN VERSION)
+   STACDEX — INVENTORY PAGE STYLES (COLLECTOR TIER VERSION)
    ========================================================= */
 
 /* ===== PAGE ===== */
@@ -142,7 +142,7 @@
   font-weight: 500;
 }
 
-/* ===== CARD GRID (5 COLUMNS MAX) ===== */
+/* ===== CARD GRID ===== */
 .inventory-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -171,7 +171,7 @@
   max-width: 240px;
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  overflow: visible; /* allow glow outside */
+  overflow: visible;
   isolation: isolate;
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
 }
@@ -189,7 +189,7 @@
   display: block;
 }
 
-/* ===== CARD TITLE BELOW ===== */
+/* ===== CARD TITLE ===== */
 .card-title {
   text-align: center;
   margin-top: 0.6rem;
@@ -199,13 +199,12 @@
   max-width: 240px;
 }
 
-/* ===== HOVER INFO PANEL ===== */
+/* ===== HOVER INFO ===== */
 .card-hover-info {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  width: 100%;
   background: rgba(255, 255, 255, 0.95);
   color: #242424;
   padding: 0.6rem 0.4rem;
@@ -234,44 +233,46 @@
 }
 
 /* =========================================================
-   VALUE TIERS (LARGER GLOW EFFECTS)
+   VALUE TIERS (COLLECTOR SYSTEM)
    ========================================================= */
 
-/* ----- Common Tier ----- */
-.tier-common {
-  box-shadow: 0 0 14px rgba(255, 255, 255, 0.1);
+/* Base (Common) */
+.tier-base {
+  box-shadow: 0 0 14px rgba(124, 124, 124, 0.1);
 }
 
-/* ----- Blue Tier (Rare <$500) ----- */
-.tier-blue {
-  box-shadow: 0 0 30px rgba(0, 140, 255, 0.7);
+/* Nice Pull (Blue) */
+.tier-nice {
+  box-shadow: 0 0 20px rgba(0, 140, 255, 0.6);
 }
 
-/* ----- Red Tier ($500–$999) ----- */
-.tier-red {
-  box-shadow: 0 0 45px rgba(255, 60, 60, 0.8);
-  animation: redPulse 2s ease-in-out infinite;
+/* Solid (Green) */
+.tier-solid {
+  box-shadow: 0 0 24px rgba(15, 131, 25, 0.8);
 }
 
-/* ----- Gold Tier ($1000+) ----- */
-.tier-gold {
+/* Hit (Purple) */
+.tier-hit {
+  box-shadow: 0 0 32px rgba(106, 13, 173, 0.9);
+  animation: tierPulse 3s ease-in-out infinite;
+}
+
+/* Grail (Gold) */
+.tier-grail {
   position: relative;
-  box-shadow: 0 0 55px rgba(255, 215, 0, 0.9);
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.9);
 }
 
-.tier-gold::before {
+.tier-grail::before {
   content: "";
   position: absolute;
-  top: -14px;
-  left: -14px;
-  right: -14px;
-  bottom: -14px;
+  inset: -12px;
   border-radius: 12px;
-  background: linear-gradient(120deg, gold, white, gold);
+  background: linear-gradient(120deg, #FFD700, white, #FFD700);
   background-size: 200% 200%;
   animation: goldShimmer 3s linear infinite;
   filter: blur(8px);
-  opacity: 0.8;
+  opacity: 0.75;
   z-index: -1;
 }
 
@@ -280,24 +281,14 @@
    ========================================================= */
 
 @keyframes goldShimmer {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-@keyframes redPulse {
-  0%, 100% {
-    box-shadow: 0 0 25px rgba(255, 60, 60, 0.8);
-  }
-  50% {
-    box-shadow: 0 0 55px rgba(255, 0, 0, 1);
-  }
+@keyframes tierPulse {
+  0%, 100% { box-shadow: 0 0 24px rgba(106, 13, 173, 0.8); }
+  50% { box-shadow: 0 0 40px rgba(160, 55, 255, 1); }
 }
 
 /* =========================================================
@@ -305,37 +296,24 @@
    ========================================================= */
 
 @media (max-width: 1400px) {
-  .inventory-grid {
-    grid-template-columns: repeat(4, 1fr);
-    max-width: 1200px;
-  }
+  .inventory-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
 @media (max-width: 1100px) {
-  .inventory-grid {
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 900px;
-  }
+  .inventory-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 750px) {
-  .inventory-grid {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 650px;
-  }
+  .inventory-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 500px) {
-  .inventory-grid {
-    grid-template-columns: 1fr;
-    max-width: 350px;
-  }
+  .inventory-grid { grid-template-columns: 1fr; }
 }
 
 /* =========================================================
    NO RESULTS
    ========================================================= */
-
 .no-results {
   color: #bbb;
   text-align: center;

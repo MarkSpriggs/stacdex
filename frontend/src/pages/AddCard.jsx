@@ -13,6 +13,7 @@ export default function AddCard() {
   const [statuses, setStatuses] = useState([]);
   const [gradingCompanies, setGradingCompanies] = useState([]);
   const [conditions, setConditions] = useState([]);
+  const [teams, setTeams] = useState([]);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -43,6 +44,7 @@ export default function AddCard() {
   const [imagePreview, setImagePreview] = useState(defaultCardImage);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [filteredTeams, setFilteredTeams] = useState([]);
 
   // Fetch lookup data on mount
   useEffect(() => {
@@ -50,17 +52,19 @@ export default function AddCard() {
       try {
         const headers = { Authorization: `Bearer ${token}` };
 
-        const [categoriesRes, statusesRes, gradingCompaniesRes, conditionsRes] = await Promise.all([
+        const [categoriesRes, statusesRes, gradingCompaniesRes, conditionsRes, teamsRes] = await Promise.all([
           fetch(`${import.meta.env.VITE_API_URL}/lookups/categories`, { headers }),
           fetch(`${import.meta.env.VITE_API_URL}/lookups/statuses`, { headers }),
           fetch(`${import.meta.env.VITE_API_URL}/lookups/grading-companies`, { headers }),
           fetch(`${import.meta.env.VITE_API_URL}/lookups/conditions`, { headers }),
+          fetch(`${import.meta.env.VITE_API_URL}/lookups/teams`, { headers }),
         ]);
 
         setCategories(await categoriesRes.json());
         setStatuses(await statusesRes.json());
         setGradingCompanies(await gradingCompaniesRes.json());
         setConditions(await conditionsRes.json());
+        setTeams(await teamsRes.json());
       } catch (err) {
         console.error("Error fetching lookup data:", err);
         setError("Failed to load form data. Please refresh the page.");
@@ -70,12 +74,32 @@ export default function AddCard() {
     fetchLookupData();
   }, [token]);
 
+  // Filter teams when category changes
+  useEffect(() => {
+    if (formData.category_id && teams.length > 0) {
+      const filtered = teams.filter(team => team.category_id === parseInt(formData.category_id));
+      setFilteredTeams(filtered);
+    } else {
+      setFilteredTeams([]);
+    }
+  }, [formData.category_id, teams]);
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
+
+    // If category changes, reset team_name
+    if (name === "category_id") {
+      setFormData({
+        ...formData,
+        [name]: type === "checkbox" ? checked : value,
+        team_name: "",
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: type === "checkbox" ? checked : value,
+      });
+    }
   };
 
   const handleImageChange = (e) => {
@@ -286,14 +310,22 @@ export default function AddCard() {
 
             <div className="form-group">
               <label htmlFor="team_name">Team Name</label>
-              <input
-                type="text"
+              <select
                 id="team_name"
                 name="team_name"
                 value={formData.team_name}
                 onChange={handleInputChange}
-                placeholder="e.g., Kansas City Chiefs"
-              />
+                disabled={!formData.category_id}
+              >
+                <option value="">
+                  {formData.category_id ? "Select Team" : "Select Category First"}
+                </option>
+                {filteredTeams.map((team) => (
+                  <option key={team.id} value={team.name}>
+                    {team.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="form-group">

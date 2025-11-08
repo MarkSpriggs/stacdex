@@ -51,3 +51,25 @@ export async function getAllConditions() {
   const { rows } = await db.query(sql);
   return rows;
 }
+
+// =============================================================
+// GET ALL TEAMS (optionally filtered by category)
+// =============================================================
+export async function getAllTeams(categoryId = null) {
+  let sql = `
+    SELECT t.id, t.name, t.category_id, c.name as category_name
+    FROM teams t
+    LEFT JOIN categories c ON t.category_id = c.id
+  `;
+
+  const params = [];
+  if (categoryId) {
+    sql += ` WHERE t.category_id = $1`;
+    params.push(categoryId);
+  }
+
+  sql += ` ORDER BY t.name ASC;`;
+
+  const { rows } = await db.query(sql, params);
+  return rows;
+}

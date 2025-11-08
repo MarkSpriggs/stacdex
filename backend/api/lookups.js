@@ -5,6 +5,7 @@ import {
   getAllStatuses,
   getAllGradingCompanies,
   getAllConditions,
+  getAllTeams,
 } from "../db/queries/lookups.js";
 
 const router = express.Router();
@@ -58,6 +59,20 @@ router.get("/conditions", requireAuth, async (req, res) => {
   } catch (err) {
     console.error("Error fetching conditions:", err);
     res.status(500).json({ error: "Failed to fetch conditions" });
+  }
+});
+
+// =============================================================
+// GET ALL TEAMS (optionally filtered by category_id query param)
+// =============================================================
+router.get("/teams", requireAuth, async (req, res) => {
+  try {
+    const { category_id } = req.query;
+    const teams = await getAllTeams(category_id || null);
+    res.json(teams);
+  } catch (err) {
+    console.error("Error fetching teams:", err);
+    res.status(500).json({ error: "Failed to fetch teams" });
   }
 });
 
