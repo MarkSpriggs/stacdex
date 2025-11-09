@@ -229,12 +229,15 @@ export default function BulkUpload() {
       <div className="instructions-section">
         <h3>📋 Important Notes</h3>
         <ul>
-          <li><strong>Required Fields:</strong> Title and Category are required for each row</li>
-          <li><strong>Flexible Column Names:</strong> Column headers are case-insensitive and flexible (e.g., "Player" = "Player Name")</li>
-          <li><strong>Unknown Columns:</strong> Any columns not recognized will be safely ignored</li>
-          <li><strong>All-or-Nothing:</strong> If any row has errors, the entire import will be rejected</li>
-          <li><strong>Images:</strong> Bulk import does not support images. Add images individually later</li>
-          <li><strong>Teams:</strong> Team names must match existing teams in the database</li>
+          <li><strong>Use the Template!</strong> We highly recommend downloading and using our template above. It's the easiest and most reliable way to ensure your import succeeds. The template includes all valid column names, example data, and helpful instructions.</li>
+          <li><strong>Required Fields:</strong> Every row must have a <strong>Title</strong> and <strong>Category</strong>. Category must be one of: Football, Baseball, Basketball, Hockey, Soccer, or Other. If these are missing or invalid, the import will fail.</li>
+          <li><strong>Optional Fields:</strong> All other fields are optional. If you provide invalid values for Status, Grading Company, or Condition, those specific fields will be set to null while the rest of your data imports successfully.</li>
+          <li><strong>Flexible Column Names:</strong> Column headers are case-insensitive and flexible (e.g., "Player" works the same as "Player Name" or "PLAYER"). However, using the template guarantees the correct column names.</li>
+          <li><strong>Teams:</strong> Team names should match existing teams in our database (e.g., "Kansas City Chiefs", "Los Angeles Lakers"). If a team name doesn't match, it will still be saved as text, but won't link to our team database.</li>
+          <li><strong>Data Validation:</strong> Year must be between 1900-2025, and Grade Value must be between 0-10. Invalid values in these fields will cause those specific rows to be rejected.</li>
+          <li><strong>Unknown Columns:</strong> Any columns not recognized will be safely ignored - your import will still proceed.</li>
+          <li><strong>All-or-Nothing:</strong> If any row has validation errors in <strong>required fields</strong> (Title/Category) or <strong>data ranges</strong> (Year/Grade), the entire import will be rejected and you'll see specific error messages for each issue.</li>
+          <li><strong>Images:</strong> Bulk import does not support images. You can add images to individual cards after importing by editing them from your inventory.</li>
         </ul>
       </div>
     </div>
