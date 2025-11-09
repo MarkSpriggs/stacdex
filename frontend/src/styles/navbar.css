@@ -40,12 +40,45 @@ body {
   transform: scale(1.04);
 }
 
+/* ================= RIGHT SECTION ================= */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
 /* ================= GREETING ================= */
 .navbar-greeting {
-  flex: 1;
-  text-align: left;
-  margin-left: 2rem;
-  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navbar-greeting-icon {
+  width: 24px;
+  height: 24px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: #fc751c;
+  flex-shrink: 0;
+}
+
+.navbar-greeting-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.greeting-message {
+  font-size: 0.8rem;
+  color: #666;
+  font-weight: 400;
+  text-transform: lowercase;
+  letter-spacing: 0.3px;
+}
+
+.greeting-name {
+  font-size: 1rem;
   font-weight: 600;
   color: #242424;
   letter-spacing: 0.3px;
@@ -84,18 +117,32 @@ body {
     height: 36px;
   }
 
-  .navbar-greeting {
-    font-size: 1rem;
+  .navbar-right {
+    gap: 1rem;
+  }
+
+  .navbar-greeting-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .greeting-message {
+    font-size: 0.7rem;
+  }
+
+  .greeting-name {
+    font-size: 0.875rem;
   }
 
   .navbar-avatar {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
+    border-width: 3px;
   }
 }
 
 @media (max-width: 480px) {
   .navbar-greeting {
-    font-size: 0.875rem;
+    display: none;
   }
 }

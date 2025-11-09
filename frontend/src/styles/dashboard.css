@@ -2,6 +2,8 @@
 
 .dashboard-container {
   min-height: 100vh;
+  height: 100%;
+  width: 100%;
   padding: 120px 3rem 4rem;
   background-color: #242424;
   display: flex;
@@ -10,70 +12,44 @@
   justify-content: flex-start;
 }
 
-/* ===== GREETING ===== */
-.dashboard-greeting {
+/* ===== DASHBOARD HEADER ===== */
+.dashboard-header {
   width: 100%;
-  max-width: 1200px;
-  color: #e0e0e0;
-  font-size: 2.5rem;
-  font-weight: 300;
-  margin-bottom: 3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.greeting-with-icon {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.greeting-icon {
-  width: 40px;
-  height: 40px;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  color: #fc751c;
-}
-
-.dashboard-greeting .greeting-text {
-  font-weight: 300;
-  font-size: 1.5rem;
-  color: #999;
-  letter-spacing: 0.5px;
-}
-
-.dashboard-greeting .user-name {
-  font-weight: 700;
-  font-size: 3rem;
-  color: #fc751c;
-  letter-spacing: -0.5px;
+  max-width: 1400px;
+  margin-bottom: 2.5rem;
 }
 
 .dashboard-title {
-  color: #e0e0e0;
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 3rem;
-  text-align: center;
+  color: #ffffff;
+  font-size: 3rem;
+  font-weight: 300;
+  margin: 0 0 1rem 0;
+  text-align: left;
+  letter-spacing: 1px;
+  text-transform: lowercase;
+}
+
+.dashboard-separator {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #fc751c 0%, rgba(252, 117, 28, 0.3) 50%, transparent 100%);
 }
 
 /* ===== GRID LAYOUT ===== */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
   width: 100%;
-  max-width: 1200px;
-  padding: 0 1rem;
+  max-width: 1400px;
+  flex: 1;
 }
 
 /* ===== CARDS ===== */
 .dashboard-card {
   background: #ffffff;
   border-radius: 16px;
-  padding: 2.5rem;
+  padding: 2rem;
   min-height: 280px;
   display: flex;
   flex-direction: column;
@@ -110,9 +86,9 @@
 }
 
 .card-icon {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 1.5rem;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 1rem;
   transition: all 0.3s ease;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -126,18 +102,19 @@
 
 .dashboard-card h2 {
   color: #242424;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   position: relative;
   z-index: 1;
+  text-align: center;
 }
 
 .dashboard-card p {
   color: #666;
-  font-size: 1rem;
-  margin-top: 0.75rem;
-  line-height: 1.6;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  line-height: 1.5;
   text-align: center;
   z-index: 1;
   position: relative;
@@ -146,9 +123,13 @@
 /* ===== FEATURED CARD (Inventory Search) ===== */
 .featured-card {
   grid-column: 1 / -1;
-  min-height: 320px;
-  background: #fc751c;
+  min-height: 240px;
+  background: linear-gradient(135deg, #fc751c 0%, #e86812 100%);
   border: 2px solid #fc751c;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 3rem;
+  gap: 2rem;
 }
 
 .featured-card::before {
@@ -163,10 +144,11 @@
 }
 
 .featured-card .card-icon {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 1.5rem;
+  width: 70px;
+  height: 70px;
+  margin-bottom: 0;
   color: #ffffff;
+  flex-shrink: 0;
 }
 
 .featured-card:hover .card-icon {
@@ -175,15 +157,19 @@
 }
 
 .featured-card h2 {
-  font-size: 2rem;
+  font-size: 1.75rem;
   color: #ffffff;
+  margin-bottom: 0.75rem;
+  text-align: left;
 }
 
 .featured-card p {
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: #ffffff;
-  max-width: 600px;
+  max-width: 100%;
   opacity: 0.95;
+  text-align: left;
+  margin-top: 0;
 }
 
 /* ===== COMING SOON CARD ===== */
@@ -234,56 +220,76 @@
 }
 
 /* ===== RESPONSIVE ===== */
+@media (max-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .featured-card {
+    min-height: 220px;
+    padding: 2.5rem;
+  }
+}
+
 @media (max-width: 768px) {
   .dashboard-container {
     padding: 110px 1.5rem 3rem;
   }
 
-  .dashboard-greeting {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .dashboard-header {
     margin-bottom: 2rem;
-  }
-
-  .greeting-icon {
-    width: 32px;
-    height: 32px;
-  }
-
-  .dashboard-greeting .greeting-text {
-    font-size: 1.25rem;
-  }
-
-  .dashboard-greeting .user-name {
-    font-size: 2.25rem;
   }
 
   .dashboard-title {
-    font-size: 2rem;
-    margin-bottom: 2rem;
+    font-size: 2.25rem;
   }
 
   .dashboard-card {
     min-height: 240px;
+    padding: 2rem;
   }
 
   .featured-card {
-    min-height: 280px;
-  }
-
-  .card-icon {
-    width: 50px;
-    height: 50px;
-  }
-
-  .featured-card .card-icon {
-    width: 65px;
-    height: 65px;
+    min-height: 200px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    gap: 1rem;
   }
 
   .featured-card h2 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+    text-align: center;
   }
 
   .featured-card p {
-    font-size: 1rem;
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  .featured-card .card-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+  }
+
+  .card-icon {
+    width: 45px;
+    height: 45px;
+  }
+
+  .dashboard-card h2 {
+    font-size: 1.125rem;
+  }
+
+  .dashboard-card p {
+    font-size: 0.8rem;
   }
 }

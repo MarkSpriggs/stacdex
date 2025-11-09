@@ -3,23 +3,31 @@
   margin: 0 auto;
   min-height: 100vh;
   height: 100%;
+  width: 100%;
   background: #242424;
 }
 
 .back-button {
-  background: none;
-  border: none;
-  color: #64b5f6;
-  font-size: 1rem;
+  background: rgba(252, 117, 28, 0.1);
+  border: 1px solid rgba(252, 117, 28, 0.3);
+  color: #fc751c;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
-  padding: 0.5rem 0;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  width: fit-content;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   margin-bottom: 2rem;
-  transition: color 0.2s;
 }
 
 .back-button:hover {
-  color: #42a5f5;
-  text-decoration: underline;
+  background: rgba(252, 117, 28, 0.2);
+  border-color: #fc751c;
+  transform: translateX(-4px);
 }
 
 .error-message {
