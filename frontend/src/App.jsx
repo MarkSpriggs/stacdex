@@ -11,6 +11,7 @@ import InventorySearch from "./pages/InventorySearch";
 import CardDetails from "./pages/CardDetails";
 import AddCard from "./pages/AddCard";
 import Analytics from "./pages/Analytics";
+import BulkUpload from "./pages/BulkUpload";
 import "./index.css";
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/account" element={<Account/>} />
           <Route path="/dashboard/add" element={<AddCard/>} />
+          <Route path="/dashboard/bulk-upload" element={<BulkUpload/>} />
           <Route path="/dashboard/analytics" element={<Analytics/>} />
           <Route path="/dashboard/inventory" element={<InventorySearch/>} />
           <Route path="/dashboard/inventory/:id" element={<CardDetails/>} />

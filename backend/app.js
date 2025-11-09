@@ -7,6 +7,7 @@ import authRouter from "./api/auth.js";
 import itemsRouter from "./api/items.js";
 import usersRouter from "./api/users.js";
 import lookupsRouter from "./api/lookups.js";
+import bulkUploadRouter from "./api/bulkUpload.js";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use("/auth", authRouter);      // /auth/register, /auth/login
 app.use("/items", itemsRouter);    // /items/...
 app.use("/users", usersRouter);    // /users/...
 app.use("/lookups", lookupsRouter); // /lookups/categories, /lookups/statuses, etc.
+app.use("/bulk-upload", bulkUploadRouter); // /bulk-upload, /bulk-upload/template
 
 
 // ✅ Health check route
