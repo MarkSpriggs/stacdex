@@ -65,6 +65,7 @@ export default function Dashboard() {
       )}
 
       <div className="dashboard-grid">
+        {/* Primary Action - Featured */}
         <div
           className="dashboard-card featured-card"
           onClick={() => navigate("/dashboard/inventory")}
@@ -75,9 +76,24 @@ export default function Dashboard() {
             <line x1="12" y1="22.08" x2="12" y2="12" />
           </svg>
           <h2>Inventory Search</h2>
-          <p>View and filter your entire card collection.</p>
+          <p>View, search, and filter your entire card collection.</p>
         </div>
 
+        {/* Analytics */}
+        <div
+          className="dashboard-card"
+          onClick={() => navigate("/dashboard/analytics")}
+        >
+          <svg className="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg>
+          <h2>Analytics</h2>
+          <p>View collection stats, sales data, and insights.</p>
+        </div>
+
+        {/* Add Cards - Group */}
         <div
           className="dashboard-card"
           onClick={() => navigate("/dashboard/add")}
@@ -88,7 +104,7 @@ export default function Dashboard() {
             <line x1="8" y1="12" x2="16" y2="12" />
           </svg>
           <h2>Add New Card</h2>
-          <p>Quickly add new cards to your inventory.</p>
+          <p>Quickly add a single card to your inventory.</p>
         </div>
 
         <div
@@ -102,22 +118,10 @@ export default function Dashboard() {
             <line x1="9" y1="15" x2="15" y2="15" />
           </svg>
           <h2>Bulk Import</h2>
-          <p>Import multiple cards from Excel or CSV file.</p>
+          <p>Import multiple cards from Excel or CSV files.</p>
         </div>
 
-        <div
-          className="dashboard-card"
-          onClick={() => navigate("/dashboard/analytics")}
-        >
-          <svg className="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="18" y1="20" x2="18" y2="10" />
-            <line x1="12" y1="20" x2="12" y2="4" />
-            <line x1="6" y1="20" x2="6" y2="14" />
-          </svg>
-          <h2>Analytics</h2>
-          <p>Track total value and stats of your collection.</p>
-        </div>
-
+        {/* Coming Soon */}
         <div className="dashboard-card coming-soon-card">
           <svg className="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />

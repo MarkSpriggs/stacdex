@@ -40,12 +40,15 @@ export default function Analytics() {
   // Calculate analytics
   const totalCards = items.length;
   const totalValue = items.reduce((sum, item) => sum + (Number(item.market_value) || 0), 0);
-  const averageValue = totalCards > 0 ? totalValue / totalCards : 0;
 
-  // Count by status
-  const statusCounts = items.reduce((acc, item) => {
+  // Count and value by status
+  const statusData = items.reduce((acc, item) => {
     const status = item.status_name || "Unknown";
-    acc[status] = (acc[status] || 0) + 1;
+    if (!acc[status]) {
+      acc[status] = { count: 0, value: 0 };
+    }
+    acc[status].count += 1;
+    acc[status].value += Number(item.market_value) || 0;
     return acc;
   }, {});
 
@@ -88,6 +91,79 @@ export default function Analytics() {
   const topCards = [...items]
     .sort((a, b) => (Number(b.market_value) || 0) - (Number(a.market_value) || 0))
     .slice(0, 5);
+
+  // Time-based analytics
+  const now = new Date();
+  const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
+  const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+
+  const cardsListedLast30Days = items.filter((item) => {
+    if (!item.date_listed) return false;
+    const listedDate = new Date(item.date_listed);
+    return listedDate >= thirtyDaysAgo;
+  }).length;
+
+  const cardsSoldLast30Days = items.filter((item) => {
+    if (!item.date_sold) return false;
+    const soldDate = new Date(item.date_sold);
+    return soldDate >= thirtyDaysAgo;
+  }).length;
+
+  const totalSalesRevenue = items
+    .filter((item) => item.status_name === "Sold" && item.price_listed)
+    .reduce((sum, item) => sum + (Number(item.price_listed) || 0), 0);
+
+  // Calculate listing to sale conversion rate
+  const listedOrSoldItems = items.filter((item) =>
+    item.status_name === "Listed" || item.status_name === "Sold"
+  );
+  const conversionRate = listedOrSoldItems.length > 0
+    ? (soldCount / listedOrSoldItems.length) * 100
+    : 0;
+
+  // Calculate average days to sell (for sold items with both dates)
+  const soldItemsWithDates = items.filter((item) =>
+    item.status_name === "Sold" && item.date_listed && item.date_sold
+  );
+
+  const averageDaysToSell = soldItemsWithDates.length > 0
+    ? soldItemsWithDates.reduce((sum, item) => {
+        const listed = new Date(item.date_listed);
+        const sold = new Date(item.date_sold);
+        const days = Math.floor((sold - listed) / (1000 * 60 * 60 * 24));
+        return sum + days;
+      }, 0) / soldItemsWithDates.length
+    : 0;
+
+  // Monthly listing activity (last 3 months)
+  const listingActivity = [
+    {
+      period: "Last 30 Days",
+      count: items.filter((item) => {
+        if (!item.date_listed) return false;
+        return new Date(item.date_listed) >= thirtyDaysAgo;
+      }).length,
+    },
+    {
+      period: "30-60 Days Ago",
+      count: items.filter((item) => {
+        if (!item.date_listed) return false;
+        const date = new Date(item.date_listed);
+        return date >= sixtyDaysAgo && date < thirtyDaysAgo;
+      }).length,
+    },
+    {
+      period: "60-90 Days Ago",
+      count: items.filter((item) => {
+        if (!item.date_listed) return false;
+        const date = new Date(item.date_listed);
+        return date >= ninetyDaysAgo && date < sixtyDaysAgo;
+      }).length,
+    },
+  ];
+
+  const maxListingCount = Math.max(...listingActivity.map((a) => a.count), 1);
 
   // Navigation helper to go to inventory with filters
   const navigateToFilteredInventory = (filterType, filterValue) => {
@@ -146,39 +222,31 @@ export default function Analytics() {
       </div>
 
       <div className="analytics-grid">
-        {/* Summary Stats */}
-        <div className="stat-card featured">
-          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="12" y1="1" x2="12" y2="23" />
-            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-          </svg>
-          <div className="stat-content">
-            <h3>Total Collection Value</h3>
-            <p className="stat-value">${totalValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-          </div>
-        </div>
-
-        <div className="stat-card clickable" onClick={() => navigate('/dashboard/inventory')}>
-          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-            <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-            <line x1="12" y1="22.08" x2="12" y2="12" />
-          </svg>
-          <div className="stat-content">
-            <h3>Total Cards</h3>
-            <p className="stat-value">{totalCards}</p>
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="18" y1="20" x2="18" y2="10" />
-            <line x1="12" y1="20" x2="12" y2="4" />
-            <line x1="6" y1="20" x2="6" y2="14" />
-          </svg>
-          <div className="stat-content">
-            <h3>Average Value</h3>
-            <p className="stat-value">${averageValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+        {/* Summary Stats - Featured Row */}
+        <div className="stat-card featured clickable" onClick={() => navigate('/dashboard/inventory')}>
+          <div className="stat-content combined">
+            <div className="stat-group">
+              <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                <line x1="12" y1="22.08" x2="12" y2="12" />
+              </svg>
+              <div>
+                <h3>Total Cards</h3>
+                <p className="stat-value">{totalCards}</p>
+              </div>
+            </div>
+            <div className="stat-divider"></div>
+            <div className="stat-group">
+              <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="12" y1="1" x2="12" y2="23" />
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+              <div>
+                <h3>Total Collection Value</h3>
+                <p className="stat-value">${totalValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -306,20 +374,117 @@ export default function Analytics() {
           </div>
         </div>
 
-        {/* Status Breakdown */}
+        {/* Sales Performance Metrics */}
+        <div className="stat-card">
+          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="12" y1="20" x2="12" y2="10" />
+            <line x1="18" y1="20" x2="18" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="16" />
+          </svg>
+          <div className="stat-content">
+            <h3>Total Sales Revenue</h3>
+            <p className="stat-value">${totalSalesRevenue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+          </svg>
+          <div className="stat-content">
+            <h3>Conversion Rate</h3>
+            <p className="stat-value">{conversionRate.toFixed(1)}%</p>
+            <p className="stat-subtitle">{soldCount} sold / {listedOrSoldItems.length} listed</p>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+          <div className="stat-content">
+            <h3>Avg. Days to Sell</h3>
+            <p className="stat-value">{averageDaysToSell > 0 ? Math.round(averageDaysToSell) : "N/A"}</p>
+            <p className="stat-subtitle">{soldItemsWithDates.length} cards tracked</p>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          <div className="stat-content">
+            <h3>Listed (Last 30 Days)</h3>
+            <p className="stat-value">{cardsListedLast30Days}</p>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+          <div className="stat-content">
+            <h3>Sold (Last 30 Days)</h3>
+            <p className="stat-value">{cardsSoldLast30Days}</p>
+          </div>
+        </div>
+
+        {/* Cards by Status with Values */}
         <div className="analytics-section">
           <h2>Cards by Status</h2>
           <div className="breakdown-list">
-            {Object.entries(statusCounts).map(([status, count]) => (
-              <div key={status} className="breakdown-item">
-                <span className="breakdown-label">{status}</span>
+            {Object.entries(statusData)
+              .sort(([, a], [, b]) => b.count - a.count)
+              .map(([status, data]) => (
+                <div key={status} className="breakdown-item">
+                  <span className="breakdown-label">{status}</span>
+                  <div className="breakdown-bars">
+                    <div className="breakdown-bar-group">
+                      <span className="breakdown-bar-label">Count:</span>
+                      <div className="breakdown-bar-container">
+                        <div
+                          className="breakdown-bar"
+                          style={{ width: `${(data.count / totalCards) * 100}%` }}
+                        ></div>
+                      </div>
+                      <span className="breakdown-count">{data.count}</span>
+                    </div>
+                    <div className="breakdown-bar-group">
+                      <span className="breakdown-bar-label">Value:</span>
+                      <div className="breakdown-bar-container">
+                        <div
+                          className="breakdown-bar value-bar"
+                          style={{ width: `${totalValue > 0 ? (data.value / totalValue) * 100 : 0}%` }}
+                        ></div>
+                      </div>
+                      <span className="breakdown-count">
+                        ${data.value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+
+        {/* Listing Activity Timeline */}
+        <div className="analytics-section">
+          <h2>Listing Activity (Last 90 Days)</h2>
+          <div className="breakdown-list">
+            {listingActivity.map((activity) => (
+              <div key={activity.period} className="breakdown-item">
+                <span className="breakdown-label">{activity.period}</span>
                 <div className="breakdown-bar-container">
                   <div
-                    className="breakdown-bar"
-                    style={{ width: `${(count / totalCards) * 100}%` }}
+                    className="breakdown-bar activity-bar"
+                    style={{ width: `${(activity.count / maxListingCount) * 100}%` }}
                   ></div>
                 </div>
-                <span className="breakdown-count">{count}</span>
+                <span className="breakdown-count">{activity.count} cards</span>
               </div>
             ))}
           </div>
