@@ -2,6 +2,7 @@
   padding: 6rem 2rem 2rem 2rem;
   margin: 0 auto;
   min-height: 100vh;
+  height: 100%;
   background: #242424;
 }
 
@@ -348,7 +349,7 @@
 
 @media (max-width: 640px) {
   .card-details-page {
-    padding: 1rem;
+    padding: 110px 1rem 2rem;
   }
 
   .card-details-container {
